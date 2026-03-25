@@ -1,0 +1,5 @@
+server=nginx
+port=80
+host=localhost
+port=443
+debug=false

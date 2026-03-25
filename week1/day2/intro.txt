@@ -1,0 +1,6 @@
+I am learning DevOps
+Linux is the foundation
+Git is version control
+Docker containers are next
+AWS is the cloud platform
+example
