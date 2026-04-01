@@ -1,0 +1,9 @@
+Week 2 Day 1 - Networking tools learned
+- ping: check server reachability
+- curl: HTTP requests from terminal
+- nslookup/dig: DNS lookups
+- ss: check open ports
+- traceroute: map network path
+- DNS port is always 53
+- HTTP status codes: 200, 301, 404, 500
+- TTL: how long DNS caches an answer
