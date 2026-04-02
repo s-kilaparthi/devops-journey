@@ -1,0 +1,19 @@
+ 15:31:10 up 1 day, 11:44,  2 users,  load average: 0.00, 0.00, 0.00
+Filesystem      Size  Used Avail Use% Mounted on
+none            3.8G     0  3.8G   0% /usr/lib/modules/6.6.87.2-microsoft-standard-WSL2
+none            3.8G  4.0K  3.8G   1% /mnt/wsl
+drivers         453G  199G  254G  44% /usr/lib/wsl/drivers
+/dev/sdd       1007G  1.7G  954G   1% /
+none            3.8G  856K  3.8G   1% /mnt/wslg
+none            3.8G     0  3.8G   0% /usr/lib/wsl/lib
+rootfs          3.8G  2.7M  3.8G   1% /init
+none            3.8G  528K  3.8G   1% /run
+none            3.8G     0  3.8G   0% /run/lock
+none            3.8G     0  3.8G   0% /run/shm
+none            3.8G   76K  3.8G   1% /mnt/wslg/versions.txt
+none            3.8G   76K  3.8G   1% /mnt/wslg/doc
+C:\             453G  199G  254G  44% /mnt/c
+tmpfs           771M   20K  771M   1% /run/user/1000
+               total        used        free      shared  buff/cache   available
+Mem:            7708         578        7085           4         201        7129
+Swap:           2048           0        2048
