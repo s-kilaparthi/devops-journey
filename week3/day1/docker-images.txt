@@ -1,0 +1,3 @@
+REPOSITORY    TAG       IMAGE ID       CREATED       SIZE
+nginx         latest    0cf1d6af5ca7   10 days ago   161MB
+hello-world   latest    e2ac70e7319a   11 days ago   10.1kB
