@@ -1,0 +1,10 @@
+services:
+  nginx:
+    image: karthik-nginx
+    ports:
+      - "8080:80"
+
+  python:
+    image: karthik-python
+    ports:
+      - "8000:8000"
