@@ -1,0 +1,1 @@
+Deployed Docker container on EC2 - IP: 3.144.74.132
