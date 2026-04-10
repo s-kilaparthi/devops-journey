@@ -1,0 +1,2 @@
+S3 bucket created: karthik-devops-bucket
+Static website hosted on S3
