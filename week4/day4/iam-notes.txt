@@ -1,0 +1,2 @@
+IAM user created: karthik-devops-user
+AWS CLI configured and tested
