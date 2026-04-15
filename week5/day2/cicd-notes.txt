@@ -1,0 +1,3 @@
+Full CI/CD pipeline working!
+Elastic IP: 16.58.235.221
+Pipeline: push → build → Docker Hub → EC2
