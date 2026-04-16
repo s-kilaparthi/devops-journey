@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - staging
 
 jobs:
   test:
@@ -25,14 +26,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set environment
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+          fi
+
       - name: Build Docker image
-        run: docker build -t skilaparthi/karthik-nginx ./week3/day2
+        run: |
+          docker build -t skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }} ./week3/day2
 
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u skilaparthi --password-stdin
 
       - name: Push to Docker Hub
-        run: docker push skilaparthi/karthik-nginx:latest
+        run: docker push skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }}
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -41,6 +51,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull skilaparthi/karthik-nginx:latest
+            docker pull skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }}
             docker stop $(docker ps -q) || true
-            docker run -d -p 80:80 skilaparthi/karthik-nginx:latest
+            docker run -d -p 80:80 skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }}
