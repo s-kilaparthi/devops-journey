@@ -35,8 +35,7 @@ jobs:
           fi
 
       - name: Build Docker image
-        run: |
-          docker build -t skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }} ./week3/day2
+        run: docker build -t skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }} ./week3/day2
 
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u skilaparthi --password-stdin
