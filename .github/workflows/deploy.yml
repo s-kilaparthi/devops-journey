@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
- test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,7 +17,6 @@ jobs:
 
       - name: Run tests
         run: pytest week5/day3/app/test_app.py -v
-
 
   deploy:
     runs-on: ubuntu-latest
