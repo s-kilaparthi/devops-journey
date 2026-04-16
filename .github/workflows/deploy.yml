@@ -6,9 +6,22 @@ on:
       - main
 
 jobs:
+ test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Run tests
+        run: pytest week5/day3/app/test_app.py -v
+
+
   deploy:
     runs-on: ubuntu-latest
-    
+    needs: test
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
