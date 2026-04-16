@@ -18,3 +18,4 @@ Build a production-grade portfolio project:
 ## Timeline
 Started: March 2026
 Target: December 2026
+# staging environment
