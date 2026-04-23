@@ -1,5 +1,5 @@
-import pytest
-from app import add, subtract, multiply, divide , square , cube
+import pytest 
+from app import add, subtract, multiply, divide , square , cube , remainder , is_odd , is_even
 
 def test_add():
     assert add(2, 3) == 5
@@ -22,3 +22,14 @@ def test_square():
 
 def test_cube():
     assert cube(3) == 27
+
+def test_remainder():
+    assert remainder(10, 3) == 1
+
+def test_is_odd():
+    assert is_odd(3) == True
+    assert is_odd(4) == False
+
+def test_is_even():
+    assert is_even(4) == True
+    assert is_even(3) == False
