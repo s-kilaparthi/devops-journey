@@ -53,3 +53,17 @@ jobs:
             docker pull skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }}
             docker stop $(docker ps -q) || true
             docker run -d -p 80:80 skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }}
+      - name: Notify on success
+        if: success()
+        run: |
+          echo "✅ Deployment successful!"
+          echo "Branch: ${{ github.ref }}"
+          echo "Commit: ${{ github.sha }}"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Branch: ${{ github.ref }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Check Actions tab for details!"
