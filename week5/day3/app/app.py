@@ -17,3 +17,12 @@ def square(a):
 
 def cube(a):
     return a * a * a
+
+def remainder(a, b):
+    return a % b
+
+def is_odd(a):
+    return a % 2 != 0
+
+def is_even(a):
+    return a % 2 == 0
