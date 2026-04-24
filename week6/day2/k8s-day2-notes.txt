@@ -1,0 +1,3 @@
+Kubernetes Services and Rolling Updates
+Service types: ClusterIP, NodePort, LoadBalancer
+Rolling updates = zero downtime deployment
