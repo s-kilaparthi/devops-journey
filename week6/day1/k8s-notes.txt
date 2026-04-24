@@ -1,0 +1,2 @@
+Kubernetes basics - minikube setup
+Commands learned: kubectl get pods, scale, delete
