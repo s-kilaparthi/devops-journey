@@ -1,0 +1,31 @@
+---
+- name: Configure Web Server with Variables
+  hosts: webservers
+  become: yes
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Start nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Deploy webpage from template
+      template:
+        src: index.html.j2
+        dest: /var/www/html/index.html
+
+    - name: Show server info
+      debug:
+        msg: "Deployed {{ app_name }} on {{ app_environment }} environment!"
