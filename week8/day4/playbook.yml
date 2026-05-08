@@ -32,17 +32,4 @@
         groups: docker
         append: yes
 
-    - name: Pull Docker image
-      docker_image:
-        name: skilaparthi/karthik-nginx
-        tag: production
-        source: pull
-
-    - name: Run Docker container
-      docker_container:
-        name: karthik-app
-        image: skilaparthi/karthik-nginx:production
-        state: started
-        ports:
-          - "80:80"
-        restart_policy: always
+    
