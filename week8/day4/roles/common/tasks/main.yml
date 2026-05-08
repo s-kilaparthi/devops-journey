@@ -1,0 +1,12 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install required packages
+  apt:
+    name:
+      - nginx
+      - docker.io
+      - git
+    state: present

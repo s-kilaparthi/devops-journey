@@ -1,0 +1,27 @@
+---
+- name: Start docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add ubuntu user to docker group
+  user:
+    name: ubuntu
+    groups: docker
+    append: yes
+
+- name: Pull Docker image
+  docker_image:
+    name: skilaparthi/karthik-nginx
+    tag: production
+    source: pull
+
+- name: Run Docker container
+  docker_container:
+    name: karthik-app
+    image: skilaparthi/karthik-nginx:production
+    state: started
+    ports:
+      - "80:80"
+    restart_policy: always

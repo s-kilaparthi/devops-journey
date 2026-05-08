@@ -1,0 +1,10 @@
+---
+- name: Configure EC2 Server using Roles
+  hosts: webservers
+  become: yes
+
+  roles:
+    - common
+    - nginx
+    - docker
+    - app

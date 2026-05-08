@@ -1,0 +1,5 @@
+---
+- name: Create web directory
+  file:
+    path: /var/www/html
+    state: directory
