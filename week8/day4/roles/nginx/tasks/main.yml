@@ -1,0 +1,6 @@
+---
+- name: Make sure nginx is stopped
+  service:
+    name: nginx
+    state: stopped
+    enabled: no
