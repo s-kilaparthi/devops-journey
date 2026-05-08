@@ -1,0 +1,5 @@
+---
+app_name: Karthik DevOps App
+app_environment: production
+server_port: 80
+admin_email: karthik@devops.com
