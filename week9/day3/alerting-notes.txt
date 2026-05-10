@@ -1,0 +1,2 @@
+Grafana alerting setup
+Alert: High CPU > 80% for 5 minutes
