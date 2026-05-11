@@ -1,0 +1,35 @@
+---
+- name: Configure Server
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Start docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add ubuntu to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Pull and run container
+      docker_container:
+        name: karthik-app
+        image: skilaparthi/karthik-nginx:production
+        state: started
+        ports:
+          - "80:80"
+        restart_policy: always

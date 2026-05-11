@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: karthik-storage-pod
+spec:
+  containers:
+  - name: karthik-container
+    image: ubuntu
+    command: ["/bin/bash", "-c", "while true; do sleep 30; done"]
+    volumeMounts:
+    - name: karthik-storage
+      mountPath: /app/data
+  volumes:
+  - name: karthik-storage
+    persistentVolumeClaim:
+      claimName: karthik-pvc
+

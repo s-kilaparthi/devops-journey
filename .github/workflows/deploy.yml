@@ -16,6 +16,9 @@ jobs:
       - name: Install pytest
         run: pip install pytest
 
+      - name: Run security scan
+        run: bandit -r week10/day1/ -ll
+
       - name: Run tests
         run: pytest week5/day3/app/test_app.py -v
 

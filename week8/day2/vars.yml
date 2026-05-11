@@ -1,0 +1,6 @@
+---
+app_environment: production
+app_name: Karthik DevOps App
+server_port: 80
+admin_email: karthik@devops.com
+nginx_version: latest
