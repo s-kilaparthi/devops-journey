@@ -19,6 +19,14 @@ jobs:
       - name: Run security scan
         run: python3 -m bandit -r week10/day1/secure_app.py -ll
 
+      - name: Build Docker image for scanning
+        run: docker build -t scan-image ./week3/day2/
+
+      - name: Scan Docker image with Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+          trivy image --exit-code 1 --severity CRITICAL scan-image
+
       - name: Run tests
         run: pytest week5/day3/app/test_app.py -v
 
