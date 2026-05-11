@@ -1,0 +1,2 @@
+SAST with Bandit added to CI/CD pipeline
+Scans for SQL injection, command injection, hardcoded passwords
