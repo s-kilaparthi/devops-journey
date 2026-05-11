@@ -1,0 +1,3 @@
+Docker image scanning with Trivy
+Switched from nginx:latest to nginx:alpine
+Reduced vulnerabilities from 234 to 3!
