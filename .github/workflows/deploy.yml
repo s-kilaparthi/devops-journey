@@ -13,8 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install pytest
-        run: pip install pytest
+      - name: Install pytest and bandit
+        run: pip3 install pytest bandit
+
+      - name: Run security scan
+        run: python3 -m bandit -r week10/day1/secure_app.py -ll
 
       - name: Run tests
         run: pytest week5/day3/app/test_app.py -v
