@@ -7,52 +7,82 @@ on:
       - staging
 
 jobs:
-  test:
+  security:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install pytest and bandit
-        run: pip3 install pytest bandit
+      - name: Install Bandit
+        run: pip3 install bandit
 
-      - name: Run security scan
-        run: python3 -m bandit -r week10/day1/secure_app.py -ll
+      - name: Run SAST scan
+        run: python3 -m bandit week10/day1/secure_app.py -ll
 
-      - name: Build Docker image for scanning
+  build-and-scan:
+    runs-on: ubuntu-latest
+    needs: security
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
         run: docker build -t scan-image ./week3/day2/
 
-      - name: Scan Docker image with Trivy
+      - name: Install Trivy
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-          trivy image --exit-code 1 --severity CRITICAL scan-image
+
+      - name: Scan Docker image
+        run: trivy image --exit-code 1 --severity CRITICAL scan-image
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build-and-scan
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install pytest
+        run: pip3 install pytest
 
       - name: Run tests
         run: pytest week5/day3/app/test_app.py -v
 
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/staging'
+    steps:
+      - name: Deploy to staging
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull skilaparthi/karthik-nginx:staging
+            docker stop karthik-container || true
+            docker rm karthik-container || true
+            docker run -d -p 80:80 --name karthik-container skilaparthi/karthik-nginx:staging
+
   deploy:
     runs-on: ubuntu-latest
     needs: test
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set environment
-        run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "ENVIRONMENT=production" >> $GITHUB_ENV
-          else
-            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-          fi
-
-      - name: Build Docker image
-        run: docker build -t skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }} ./week3/day2
-
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u skilaparthi --password-stdin
 
-      - name: Push to Docker Hub
-        run: docker push skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }}
+      - name: Build and push Docker image
+        run: |
+          docker build -t skilaparthi/karthik-nginx:latest ./week3/day2/
+          docker build -t skilaparthi/karthik-nginx:production ./week3/day2/
+          docker push skilaparthi/karthik-nginx:latest
+          docker push skilaparthi/karthik-nginx:production
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -61,20 +91,20 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }}
-            docker stop $(docker ps -q) || true
-            docker run -d -p 80:80 skilaparthi/karthik-nginx:${{ env.ENVIRONMENT }}
-      - name: Notify on success
-        if: success()
-        run: |
-          echo "✅ Deployment successful!"
-          echo "Branch: ${{ github.ref }}"
-          echo "Commit: ${{ github.sha }}"
+            docker pull skilaparthi/karthik-nginx:production
+            docker stop karthik-container || true
+            docker rm karthik-container || true
+            docker run -d -p 80:80 --name karthik-container skilaparthi/karthik-nginx:production
 
-      - name: Notify on failure
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always()
+    steps:
+      - name: Notify success
+        if: success()
+        run: echo "✅ DevSecOps Pipeline passed! Deployed to production!"
+
+      - name: Notify failure
         if: failure()
-        run: |
-          echo "❌ Deployment failed!"
-          echo "Branch: ${{ github.ref }}"
-          echo "Commit: ${{ github.sha }}"
-          echo "Check Actions tab for details!"
+        run: echo "❌ Pipeline failed! Check security scans or tests!"
